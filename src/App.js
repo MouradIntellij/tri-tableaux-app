@@ -6,6 +6,7 @@ import RechercheBinaire from './RechercheBinaire';
 import RechercheLineaire from './RechercheLineaire';
 import RechercheInterpolation from './RechercheInterpolation';
 import RechercheFibonacci from './RechercheFibonacci';
+import BigOComplexity from "./BigOComplexity";
 
 function App() {
   const [currentPage, setCurrentPage] = useState('menu');
@@ -126,6 +127,7 @@ function App() {
       case 'lineaire': return <>{backButton}<RechercheLineaire /></>;
       case 'interpolation': return <>{backButton}<RechercheInterpolation /></>;
       case 'fibonacci': return <>{backButton}<RechercheFibonacci /></>;
+      case 'bigO': return <>{backButton}<BigOComplexity /></>;
       default: return null;
     }
   };
@@ -197,6 +199,25 @@ function App() {
               <div style={styles.buttonTitle}>📥 Tri par Insertion</div>
               <div style={styles.buttonDesc}>Insérez chaque carte à sa bonne position</div>
             </button>
+
+            <button onClick={() => setCurrentPage('bigO')}
+                style={{
+                  ...styles.algorithmButton,
+                  background: 'linear-gradient(135deg, #6b21a8 0%, #9333ea 100%)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-3px)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(147, 51, 234, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+                }}
+            >
+              <div style={styles.buttonTitle}>📊 Complexité Big O</div>
+              <div style={styles.buttonDesc}>O(1), O(log n), O(n), O(n^2) ...</div>
+            </button>
+
           </div>
 
           <h2 style={styles.sectionTitle}>🔎 Algorithmes de Recherche</h2>
