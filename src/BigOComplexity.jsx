@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import "./ChartSetup";
+import ChartSetup from "./ChartSetup";
 
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@600;900&display=swap');
@@ -254,7 +255,7 @@ export default function BigOComplexity() {
         const ctx = canvasRef.current?.getContext('2d');
         if (!ctx) return;
 
-        const chart = new Chart(ctx, {
+        const chart = new ChartSetup(ctx, {
             type: 'line',
             data: { datasets: buildDatasets() },
             options: {
