@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Chart from 'chart.js/auto';
+
+import "./ChartSetup";
 
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@600;900&display=swap');
