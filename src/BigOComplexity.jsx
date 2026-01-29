@@ -1,28 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { 
-  Chart,
-  LineController,  // 🔹 AJOUT CRITIQUE : Enregistrement du contrôleur de ligne
-  LineElement,
-  PointElement,
-  LinearScale,
-  CategoryScale,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
+import {
+    Chart,
+    LineController,  // 🔹 AJOUT CRITIQUE : Enregistrement du contrôleur de ligne
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
 } from "chart.js";
 
 // 🔹 Enregistrement de tous les composants nécessaires
 Chart.register(
-  LineController,  // 🔹 CRITIQUE : Sans ceci, l'erreur "line is not a registered controller" apparaît
-  LineElement,
-  PointElement,
-  LinearScale,
-  CategoryScale,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
+    LineController,  // 🔹 CRITIQUE : Sans ceci, l'erreur "line is not a registered controller" apparaît
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
 );
 
 const styles = `
@@ -225,10 +225,10 @@ export default function BigOComplexity() {
         if (!chartRef.current) return;
 
         const ctx = chartRef.current.getContext('2d');
-        
+
         // 🔹 Générer des données pour les courbes de complexité
         const n = Array.from({ length: 20 }, (_, i) => i + 1);
-        
+
         // 🔹 Création du chart
         chartInstance.current = new Chart(ctx, {
             type: 'line',
@@ -531,8 +531,8 @@ export default function BigOComplexity() {
                 <section id="introduction">
                     <h2><span className="emoji">📖</span> Introduction à Big O</h2>
                     <p style={{ fontSize: '1.2rem', lineHeight: '1.8' }}>
-                        La <strong style={{ color: 'var(--accent-primary)' }}>notation Big O</strong> est un langage mathématique 
-                        utilisé pour décrire la <strong>performance</strong> et l'<strong>efficacité</strong> d'un algorithme. 
+                        La <strong style={{ color: 'var(--accent-primary)' }}>notation Big O</strong> est un langage mathématique
+                        utilisé pour décrire la <strong>performance</strong> et l'<strong>efficacité</strong> d'un algorithme.
                         Elle permet de répondre à une question cruciale :
                     </p>
                     <div className="example-box" style={{ marginTop: '2rem' }}>
@@ -541,14 +541,14 @@ export default function BigOComplexity() {
                             Comment mon algorithme se comportera-t-il quand les données augmentent ?
                         </h4>
                         <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
-                            Big O mesure le <strong style={{ color: 'var(--accent-secondary)' }}>pire cas</strong> (worst case) 
-                            du nombre d'opérations nécessaires en fonction de la taille des données <code style={{ 
-                                background: 'rgba(0,0,0,0.3)', 
-                                padding: '.3rem .6rem', 
-                                borderRadius: '4px', 
-                                color: 'var(--accent-primary)',
-                                fontFamily: "'Space Mono', monospace"
-                            }}>n</code>.
+                            Big O mesure le <strong style={{ color: 'var(--accent-secondary)' }}>pire cas</strong> (worst case)
+                            du nombre d'opérations nécessaires en fonction de la taille des données <code style={{
+                            background: 'rgba(0,0,0,0.3)',
+                            padding: '.3rem .6rem',
+                            borderRadius: '4px',
+                            color: 'var(--accent-primary)',
+                            fontFamily: "'Space Mono', monospace"
+                        }}>n</code>.
                         </p>
                     </div>
 
@@ -580,7 +580,7 @@ export default function BigOComplexity() {
                             <canvas ref={chartRef}></canvas>
                         </div>
                         <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                            <strong style={{ color: 'var(--accent-primary)' }}>💡 Interprétation :</strong> Plus la courbe monte rapidement, 
+                            <strong style={{ color: 'var(--accent-primary)' }}>💡 Interprétation :</strong> Plus la courbe monte rapidement,
                             moins l'algorithme est efficace pour de grandes données.
                         </p>
                     </div>
@@ -590,7 +590,7 @@ export default function BigOComplexity() {
                     <h2><span className="emoji">🎯</span> Les différentes complexités</h2>
                     <div className="complexity-grid">
                         {complexities.map(complexity => (
-                            <div 
+                            <div
                                 key={complexity.id}
                                 className={`complexity-card ${complexity.id}`}
                                 onClick={() => setSelectedComplexity(complexity.id === selectedComplexity ? null : complexity.id)}
@@ -624,77 +624,77 @@ export default function BigOComplexity() {
                     <div style={{ overflowX: 'auto' }}>
                         <table className="comparison-table">
                             <thead>
-                                <tr>
-                                    <th>Complexité</th>
-                                    <th>n = 10</th>
-                                    <th>n = 100</th>
-                                    <th>n = 1 000</th>
-                                    <th>n = 10 000</th>
-                                    <th>Qualité</th>
-                                </tr>
+                            <tr>
+                                <th>Complexité</th>
+                                <th>n = 10</th>
+                                <th>n = 100</th>
+                                <th>n = 1 000</th>
+                                <th>n = 10 000</th>
+                                <th>Qualité</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--constant)' }}>O(1)</strong></td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td><span className="complexity-badge excellent">Excellent</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--logarithmic)' }}>O(log n)</strong></td>
-                                    <td>3</td>
-                                    <td>7</td>
-                                    <td>10</td>
-                                    <td>13</td>
-                                    <td><span className="complexity-badge good">Très bon</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--linear)' }}>O(n)</strong></td>
-                                    <td>10</td>
-                                    <td>100</td>
-                                    <td>1 000</td>
-                                    <td>10 000</td>
-                                    <td><span className="complexity-badge fair">Bon</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--linearithmic)' }}>O(n log n)</strong></td>
-                                    <td>30</td>
-                                    <td>700</td>
-                                    <td>10 000</td>
-                                    <td>130 000</td>
-                                    <td><span className="complexity-badge acceptable">Acceptable</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--quadratic)' }}>O(n²)</strong></td>
-                                    <td>100</td>
-                                    <td>10 000</td>
-                                    <td>1 000 000</td>
-                                    <td>100 000 000</td>
-                                    <td><span className="complexity-badge poor">Moyen</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--cubic)' }}>O(n³)</strong></td>
-                                    <td>1 000</td>
-                                    <td>1 000 000</td>
-                                    <td>1 000 000 000</td>
-                                    <td>1 000 000 000 000</td>
-                                    <td><span className="complexity-badge bad">Mauvais</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style={{ color: 'var(--exponential)' }}>O(2ⁿ)</strong></td>
-                                    <td>1 024</td>
-                                    <td>1.27 × 10³⁰</td>
-                                    <td>∞</td>
-                                    <td>∞</td>
-                                    <td><span className="complexity-badge terrible">Terrible</span></td>
-                                </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--constant)' }}>O(1)</strong></td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td><span className="complexity-badge excellent">Excellent</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--logarithmic)' }}>O(log n)</strong></td>
+                                <td>3</td>
+                                <td>7</td>
+                                <td>10</td>
+                                <td>13</td>
+                                <td><span className="complexity-badge good">Très bon</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--linear)' }}>O(n)</strong></td>
+                                <td>10</td>
+                                <td>100</td>
+                                <td>1 000</td>
+                                <td>10 000</td>
+                                <td><span className="complexity-badge fair">Bon</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--linearithmic)' }}>O(n log n)</strong></td>
+                                <td>30</td>
+                                <td>700</td>
+                                <td>10 000</td>
+                                <td>130 000</td>
+                                <td><span className="complexity-badge acceptable">Acceptable</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--quadratic)' }}>O(n²)</strong></td>
+                                <td>100</td>
+                                <td>10 000</td>
+                                <td>1 000 000</td>
+                                <td>100 000 000</td>
+                                <td><span className="complexity-badge poor">Moyen</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--cubic)' }}>O(n³)</strong></td>
+                                <td>1 000</td>
+                                <td>1 000 000</td>
+                                <td>1 000 000 000</td>
+                                <td>1 000 000 000 000</td>
+                                <td><span className="complexity-badge bad">Mauvais</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--exponential)' }}>O(2ⁿ)</strong></td>
+                                <td>1 024</td>
+                                <td>1.27 × 10³⁰</td>
+                                <td>∞</td>
+                                <td>∞</td>
+                                <td><span className="complexity-badge terrible">Terrible</span></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                     <p style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255, 165, 0, 0.1)', borderRadius: '12px', borderLeft: '4px solid var(--accent-warning)' }}>
-                        <strong style={{ color: 'var(--accent-warning)' }}>⚠️ Attention :</strong> Avec n = 100, 
+                        <strong style={{ color: 'var(--accent-warning)' }}>⚠️ Attention :</strong> Avec n = 100,
                         un algorithme O(2ⁿ) nécessiterait plus d'opérations qu'il n'y a d'atomes dans l'univers !
                     </p>
                 </section>
@@ -705,7 +705,7 @@ export default function BigOComplexity() {
                     <h3>Règle 1 : Ignorer les constantes</h3>
                     <div className="example-box">
                         <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>
-                            Big O ne s'intéresse qu'à la <strong style={{ color: 'var(--accent-primary)' }}>croissance asymptotique</strong>, 
+                            Big O ne s'intéresse qu'à la <strong style={{ color: 'var(--accent-primary)' }}>croissance asymptotique</strong>,
                             pas aux valeurs exactes.
                         </p>
                         <div className="rules-grid" style={{ marginTop: '1.5rem' }}>
@@ -750,29 +750,29 @@ export default function BigOComplexity() {
                         <h4>Opérations séquentielles : Addition</h4>
                         <div className="code-block">
               <pre>
-<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)   <span className="comment">// O(n)</span>
+<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)   {/* O(n) */}
                   {'{'}
-    Console.WriteLine(i);
+                  Console.WriteLine(i);
                   {'}'}
-<span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)   <span className="comment">// O(n)</span>
+                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)   {/* O(n) */}
                   {'{'}
-    Console.WriteLine(j);
+                  Console.WriteLine(j);
                   {'}'}
-<span className="comment">// Total: O(n) + O(n) = O(2n) = O(n)</span>
+                  {/* Total: O(n) + O(n) = O(2n) = O(n) */}
 </pre>
                         </div>
 
                         <h4 style={{ marginTop: '2rem' }}>Opérations imbriquées : Multiplication</h4>
                         <div className="code-block">
               <pre>
-<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)           <span className="comment">// O(n)</span>
+<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)           {/* O(n) */}
                   {'{'}
-    <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)       <span className="comment">// O(n)</span>
+                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)       {/* O(n) */}
                   {'{'}
-        Console.WriteLine(i, j);
+                  Console.WriteLine(i, j);
                   {'}'}
                   {'}'}
-<span className="comment">// Total: O(n) × O(n) = O(n²)</span>
+                  {/* Total: O(n) × O(n) = O(n²) */}
 </pre>
                         </div>
                     </div>
@@ -783,21 +783,21 @@ export default function BigOComplexity() {
               <pre>
 <span className="keyword">void</span> <span className="function">Process</span>(<span className="keyword">int</span>[] arrayA, <span className="keyword">int</span>[] arrayB)
                   {'{'}
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; arrayA.Length; i++)    <span className="comment">// O(a)</span>
+                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; arrayA.Length; i++)    {/* O(a) */}
                   {'{'}
-        Console.WriteLine(arrayA[i]);
+                  Console.WriteLine(arrayA[i]);
                   {'}'}
-    
-    <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; arrayB.Length; j++)    <span className="comment">// O(b)</span>
+
+                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; arrayB.Length; j++)    {/* O(b) */}
                   {'{'}
-        Console.WriteLine(arrayB[j]);
+                  Console.WriteLine(arrayB[j]);
                   {'}'}
                   {'}'}
-<span className="comment">// Total: O(a + b), PAS O(n)</span>
+                  {/* Total: O(a + b), PAS O(n) */}
 </pre>
                         </div>
                         <p style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0, 212, 255, 0.1)', borderRadius: '8px', borderLeft: '4px solid var(--accent-secondary)' }}>
-                            <strong style={{ color: 'var(--accent-secondary)' }}>💡 Important :</strong> Si les deux tableaux 
+                            <strong style={{ color: 'var(--accent-secondary)' }}>💡 Important :</strong> Si les deux tableaux
                             ont des tailles différentes, on utilise des variables différentes (a et b).
                         </p>
                     </div>
@@ -810,15 +810,15 @@ export default function BigOComplexity() {
                     <div className="code-block">
             <pre>
 <span className="keyword">int</span> <span className="function">SearchLinear</span>(<span className="keyword">int</span>[] array, <span className="keyword">int</span> target)
-              {'{'}
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)   <span className="comment">// Boucle exécutée n fois</span>
-              {'{'}
-        <span className="keyword">if</span> (array[i] == target)                   <span className="comment">// Comparaison O(1)</span>
-            <span className="keyword">return</span> i;
-              {'}'}
-    <span className="keyword">return</span> -<span className="number">1</span>;
-              {'}'}
-<span className="comment">// Complexité: O(n) - Dans le pire cas, on parcourt tout le tableau</span>
+                {'{'}
+                <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)   {/* Boucle exécutée n fois */}
+                {'{'}
+                <span className="keyword">if</span> (array[i] == target)                   {/* Comparaison O(1) */}
+                <span className="keyword">return</span> i;
+                {'}'}
+                <span className="keyword">return</span> -<span className="number">1</span>;
+                {'}'}
+                {/* Complexité: O(n) - Dans le pire cas, on parcourt tout le tableau */}
 </pre>
                     </div>
 
@@ -826,24 +826,24 @@ export default function BigOComplexity() {
                     <div className="code-block">
             <pre>
 <span className="keyword">int</span> <span className="function">SearchBinary</span>(<span className="keyword">int</span>[] sortedArray, <span className="keyword">int</span> target)
-              {'{'}
-    <span className="keyword">int</span> left = <span className="number">0</span>, right = sortedArray.Length - <span className="number">1</span>;
-    
-    <span className="keyword">while</span> (left &lt;= right)                        <span className="comment">// log n itérations</span>
-              {'{'}
-        <span className="keyword">int</span> mid = left + (right - left) / <span className="number">2</span>;
-        
+                {'{'}
+                <span className="keyword">int</span> left = <span className="number">0</span>, right = sortedArray.Length - <span className="number">1</span>;
+
+    <span className="keyword">while</span> (left &lt;= right)                        {/* log n itérations */}
+                {'{'}
+                <span className="keyword">int</span> mid = left + (right - left) / <span className="number">2</span>;
+
         <span className="keyword">if</span> (sortedArray[mid] == target)
             <span className="keyword">return</span> mid;
         <span className="keyword">else if</span> (sortedArray[mid] &lt; target)
-            left = mid + <span className="number">1</span>;                       <span className="comment">// On élimine la moitié gauche</span>
-        <span className="keyword">else</span>
-            right = mid - <span className="number">1</span>;                      <span className="comment">// On élimine la moitié droite</span>
-              {'}'}
-    
-    <span className="keyword">return</span> -<span className="number">1</span>;
-              {'}'}
-<span className="comment">// Complexité: O(log n) - On divise l'espace de recherche par 2 à chaque étape</span>
+            left = mid + <span className="number">1</span>;                       {/* On élimine la moitié gauche */}
+                <span className="keyword">else</span>
+            right = mid - <span className="number">1</span>;                      {/* On élimine la moitié droite */}
+                {'}'}
+
+                <span className="keyword">return</span> -<span className="number">1</span>;
+                {'}'}
+                {/* Complexité: O(log n) - On divise l'espace de recherche par 2 à chaque étape */}
 </pre>
                     </div>
 
@@ -851,24 +851,24 @@ export default function BigOComplexity() {
                     <div className="code-block">
             <pre>
 <span className="keyword">void</span> <span className="function">BubbleSort</span>(<span className="keyword">int</span>[] array)
-              {'{'}
-    <span className="keyword">int</span> n = array.Length;
-    
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n - <span className="number">1</span>; i++)              <span className="comment">// Boucle externe: n fois</span>
-              {'{'}
-        <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n - i - <span className="number">1</span>; j++)      <span className="comment">// Boucle interne: n fois</span>
-              {'{'}
-            <span className="keyword">if</span> (array[j] &gt; array[j + <span className="number">1</span>])
-                  {'{'}
-                <span className="comment">// Échanger</span>
+                {'{'}
+                <span className="keyword">int</span> n = array.Length;
+
+    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n - <span className="number">1</span>; i++)              {/* Boucle externe: n fois */}
+                {'{'}
+                <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n - i - <span className="number">1</span>; j++)      {/* Boucle interne: n fois */}
+                {'{'}
+                <span className="keyword">if</span> (array[j] &gt; array[j + <span className="number">1</span>])
+                {'{'}
+                {/* Échanger */}
                 <span className="keyword">int</span> temp = array[j];
                 array[j] = array[j + <span className="number">1</span>];
                 array[j + <span className="number">1</span>] = temp;
-                  {'}'}
-              {'}'}
-              {'}'}
-              {'}'}
-<span className="comment">// Complexité: O(n²) - Deux boucles imbriquées</span>
+                {'}'}
+                {'}'}
+                {'}'}
+                {'}'}
+                {/* Complexité: O(n²) - Deux boucles imbriquées */}
 </pre>
                     </div>
 
@@ -876,19 +876,19 @@ export default function BigOComplexity() {
                     <div className="code-block">
             <pre>
 <span className="keyword">int</span> <span className="function">Fibonacci</span>(<span className="keyword">int</span> n)
-              {'{'}
-    <span className="keyword">if</span> (n &lt;= <span className="number">1</span>)
+                {'{'}
+                <span className="keyword">if</span> (n &lt;= <span className="number">1</span>)
         <span className="keyword">return</span> n;
-    
-    <span className="keyword">return</span> Fibonacci(n - <span className="number">1</span>) + Fibonacci(n - <span className="number">2</span>);  <span className="comment">// Deux appels récursifs</span>
-              {'}'}
-<span className="comment">// Complexité: O(2ⁿ) - Chaque appel génère 2 nouveaux appels</span>
-<span className="comment">// Pour n=10, environ 1024 appels de fonction !</span>
+
+    <span className="keyword">return</span> Fibonacci(n - <span className="number">1</span>) + Fibonacci(n - <span className="number">2</span>);  {/* Deux appels récursifs */}
+                {'}'}
+                {/* Complexité: O(2ⁿ) - Chaque appel génère 2 nouveaux appels */}
+                {/* Pour n=10, environ 1024 appels de fonction ! */}
 </pre>
                     </div>
                     <p style={{ marginTop: '1rem', padding: '1.5rem', background: 'rgba(255, 0, 110, 0.1)', borderRadius: '12px', borderLeft: '4px solid var(--accent-tertiary)' }}>
-                        <strong style={{ color: 'var(--accent-tertiary)' }}>⚠️ Mauvaise pratique :</strong> Cet algorithme 
-                        récursif est très inefficace car il recalcule les mêmes valeurs plusieurs fois. 
+                        <strong style={{ color: 'var(--accent-tertiary)' }}>⚠️ Mauvaise pratique :</strong> Cet algorithme
+                        récursif est très inefficace car il recalcule les mêmes valeurs plusieurs fois.
                         Une version avec mémoïsation (programmation dynamique) serait O(n).
                     </p>
                 </section>
@@ -906,11 +906,11 @@ export default function BigOComplexity() {
               <pre>
 <span className="keyword">void</span> <span className="function">PrintPairs</span>(<span className="keyword">int</span>[] array)
                   {'{'}
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)
+                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)
                   {'{'}
-        <span className="keyword">for</span> (<span className="keyword">int</span> j = i + <span className="number">1</span>; j &lt; array.Length; j++)
+                  <span className="keyword">for</span> (<span className="keyword">int</span> j = i + <span className="number">1</span>; j &lt; array.Length; j++)
                   {'{'}
-            Console.WriteLine(array[i] + <span className="string">", "</span> + array[j]);
+                  Console.WriteLine(array[i] + <span className="string">", "</span> + array[j]);
                   {'}'}
                   {'}'}
                   {'}'}
@@ -930,7 +930,7 @@ export default function BigOComplexity() {
                                     <li>Selon la règle d'ignorer les constantes : <strong style={{ color: 'var(--accent-primary)' }}>O(n²)</strong></li>
                                 </ul>
                                 <p style={{ marginTop: '1rem', padding: '1rem', background: 'var(--bg-dark)', borderRadius: '8px' }}>
-                                    Même si la boucle interne ne parcourt pas tous les éléments, 
+                                    Même si la boucle interne ne parcourt pas tous les éléments,
                                     la croissance reste quadratique !
                                 </p>
                             </div>
@@ -1016,15 +1016,15 @@ export default function BigOComplexity() {
                   <span className="keyword">int</span> n = tableau.Length;
     <span className="keyword">int</span> compteur = <span className="number">0</span>;
 
-    <span className="comment">// Partie 1</span>
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
+                  {/* Partie 1 */}
+                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
                   {'{'}
                   <span className="keyword">if</span> (tableau[i] % <span className="number">2</span> == <span className="number">0</span>)
             compteur++;
                   {'}'}
 
-                  <span className="comment">// Partie 2</span>
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
+                  {/* Partie 2 */}
+                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
                   {'{'}
                   <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)
                   {'{'}
