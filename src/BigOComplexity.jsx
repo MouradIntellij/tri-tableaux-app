@@ -164,7 +164,7 @@ canvas { background: rgba(255,255,255,.02); border-radius: 12px; }
 /* Code blocks */
 .code-block { background: #0d1117; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid rgba(0,255,135,.2); position: relative; overflow-x: auto; }
 .code-block:before { content: '💻 Code'; position: absolute; top: .8rem; right: 1rem; font-size: .75rem; color: var(--accent-primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.code-block pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: .95rem; line-height: 1.6; color: #c9d1d9; }
+.code-block pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: .95rem; line-height: 1.6; color: #c9d1d9; white-space: pre; overflow-x: auto; }
 .code-block .keyword { color: #ff7b72; font-weight: 700; }
 .code-block .function { color: #d2a8ff; font-weight: 700; }
 .code-block .number { color: #79c0ff; }
@@ -214,6 +214,27 @@ export default function BigOComplexity() {
     const [selectedComplexity, setSelectedComplexity] = useState(null);
     const chartRef = useRef(null);      // 🔹 Référence du canvas
     const chartInstance = useRef(null); // 🔹 Référence de l'instance du chart
+
+    // Composant pour afficher le code avec coloration syntaxique
+    const CodeBlock = ({ code }) => {
+        const highlightedCode = code
+            // Commentaires
+            .replace(/\/\/(.*?)$/gm, '<span class="comment">//$1</span>')
+            // Chaînes de caractères
+            .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
+            // Nombres
+            .replace(/\b(\d+)\b/g, '<span class="number">$1</span>')
+            // Mots-clés
+            .replace(/\b(void|int|for|if|else|return|while|new|class|public|private|static)\b/g, '<span class="keyword">$1</span>')
+            // Noms de fonctions
+            .replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, '<span class="function">$1</span>(');
+
+        return (
+            <div className="code-block">
+                <pre dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+            </div>
+        );
+    };
 
     useEffect(() => {
         // 🔹 Détruire l'ancien chart si existant (évite "Canvas is already in use")
@@ -748,54 +769,42 @@ export default function BigOComplexity() {
                     <h3>Règle 3 : Addition pour séquences, multiplication pour imbrications</h3>
                     <div className="example-box">
                         <h4>Opérations séquentielles : Addition</h4>
-                        <div className="code-block">
-              <pre>
-<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)   {/* O(n) */}
-                  {'{'}
-                  Console.WriteLine(i);
-                  {'}'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)   {/* O(n) */}
-                  {'{'}
-                  Console.WriteLine(j);
-                  {'}'}
-                  {/* Total: O(n) + O(n) = O(2n) = O(n) */}
-</pre>
-                        </div>
+                        <CodeBlock code={`for (int i = 0; i < n; i++)   // O(n)
+{
+    Console.WriteLine(i);
+}
+for (int j = 0; j < n; j++)   // O(n)
+{
+    Console.WriteLine(j);
+}
+// Total: O(n) + O(n) = O(2n) = O(n)`} />
 
                         <h4 style={{ marginTop: '2rem' }}>Opérations imbriquées : Multiplication</h4>
-                        <div className="code-block">
-              <pre>
-<span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)           {/* O(n) */}
-                  {'{'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)       {/* O(n) */}
-                  {'{'}
-                  Console.WriteLine(i, j);
-                  {'}'}
-                  {'}'}
-                  {/* Total: O(n) × O(n) = O(n²) */}
-</pre>
-                        </div>
+                        <CodeBlock code={`for (int i = 0; i < n; i++)           // O(n)
+{
+    for (int j = 0; j < n; j++)       // O(n)
+    {
+        Console.WriteLine(i, j);
+    }
+}
+// Total: O(n) × O(n) = O(n²)`} />
                     </div>
 
                     <h3>Règle 4 : Différentes entrées = différentes variables</h3>
                     <div className="example-box">
-                        <div className="code-block">
-              <pre>
-<span className="keyword">void</span> <span className="function">Process</span>(<span className="keyword">int</span>[] arrayA, <span className="keyword">int</span>[] arrayB)
-                  {'{'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; arrayA.Length; i++)    {/* O(a) */}
-                  {'{'}
-                  Console.WriteLine(arrayA[i]);
-                  {'}'}
-
-                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; arrayB.Length; j++)    {/* O(b) */}
-                  {'{'}
-                  Console.WriteLine(arrayB[j]);
-                  {'}'}
-                  {'}'}
-                  {/* Total: O(a + b), PAS O(n) */}
-</pre>
-                        </div>
+                        <CodeBlock code={`void Process(int[] arrayA, int[] arrayB)
+{
+    for (int i = 0; i < arrayA.Length; i++)    // O(a)
+    {
+        Console.WriteLine(arrayA[i]);
+    }
+    
+    for (int j = 0; j < arrayB.Length; j++)    // O(b)
+    {
+        Console.WriteLine(arrayB[j]);
+    }
+}
+// Total: O(a + b), PAS O(n)`} />
                         <p style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0, 212, 255, 0.1)', borderRadius: '8px', borderLeft: '4px solid var(--accent-secondary)' }}>
                             <strong style={{ color: 'var(--accent-secondary)' }}>💡 Important :</strong> Si les deux tableaux
                             ont des tailles différentes, on utilise des variables différentes (a et b).
@@ -807,85 +816,69 @@ export default function BigOComplexity() {
                     <h2><span className="emoji">💡</span> Exemples pratiques</h2>
 
                     <h3>Exemple 1 : Recherche linéaire - O(n)</h3>
-                    <div className="code-block">
-            <pre>
-<span className="keyword">int</span> <span className="function">SearchLinear</span>(<span className="keyword">int</span>[] array, <span className="keyword">int</span> target)
-                {'{'}
-                <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)   {/* Boucle exécutée n fois */}
-                {'{'}
-                <span className="keyword">if</span> (array[i] == target)                   {/* Comparaison O(1) */}
-                <span className="keyword">return</span> i;
-                {'}'}
-                <span className="keyword">return</span> -<span className="number">1</span>;
-                {'}'}
-                {/* Complexité: O(n) - Dans le pire cas, on parcourt tout le tableau */}
-</pre>
-                    </div>
+                    <CodeBlock code={`int SearchLinear(int[] array, int target)
+{
+    for (int i = 0; i < array.Length; i++)   // Boucle exécutée n fois
+    {
+        if (array[i] == target)               // Comparaison O(1)
+            return i;
+    }
+    return -1;
+}
+// Complexité: O(n) - Dans le pire cas, on parcourt tout le tableau`} />
 
                     <h3>Exemple 2 : Recherche binaire - O(log n)</h3>
-                    <div className="code-block">
-            <pre>
-<span className="keyword">int</span> <span className="function">SearchBinary</span>(<span className="keyword">int</span>[] sortedArray, <span className="keyword">int</span> target)
-                {'{'}
-                <span className="keyword">int</span> left = <span className="number">0</span>, right = sortedArray.Length - <span className="number">1</span>;
-
-    <span className="keyword">while</span> (left &lt;= right)                        {/* log n itérations */}
-                {'{'}
-                <span className="keyword">int</span> mid = left + (right - left) / <span className="number">2</span>;
-
-        <span className="keyword">if</span> (sortedArray[mid] == target)
-            <span className="keyword">return</span> mid;
-        <span className="keyword">else if</span> (sortedArray[mid] &lt; target)
-            left = mid + <span className="number">1</span>;                       {/* On élimine la moitié gauche */}
-                <span className="keyword">else</span>
-            right = mid - <span className="number">1</span>;                      {/* On élimine la moitié droite */}
-                {'}'}
-
-                <span className="keyword">return</span> -<span className="number">1</span>;
-                {'}'}
-                {/* Complexité: O(log n) - On divise l'espace de recherche par 2 à chaque étape */}
-</pre>
-                    </div>
+                    <CodeBlock code={`int SearchBinary(int[] sortedArray, int target)
+{
+    int left = 0, right = sortedArray.Length - 1;
+    
+    while (left <= right)                        // log n itérations
+    {
+        int mid = left + (right - left) / 2;
+        
+        if (sortedArray[mid] == target)
+            return mid;
+        else if (sortedArray[mid] < target)
+            left = mid + 1;                      // On élimine la moitié gauche
+        else
+            right = mid - 1;                     // On élimine la moitié droite
+    }
+    
+    return -1;
+}
+// Complexité: O(log n) - On divise l'espace de recherche par 2 à chaque étape`} />
 
                     <h3>Exemple 3 : Tri à bulles - O(n²)</h3>
-                    <div className="code-block">
-            <pre>
-<span className="keyword">void</span> <span className="function">BubbleSort</span>(<span className="keyword">int</span>[] array)
-                {'{'}
-                <span className="keyword">int</span> n = array.Length;
-
-    <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n - <span className="number">1</span>; i++)              {/* Boucle externe: n fois */}
-                {'{'}
-                <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n - i - <span className="number">1</span>; j++)      {/* Boucle interne: n fois */}
-                {'{'}
-                <span className="keyword">if</span> (array[j] &gt; array[j + <span className="number">1</span>])
-                {'{'}
-                {/* Échanger */}
-                <span className="keyword">int</span> temp = array[j];
-                array[j] = array[j + <span className="number">1</span>];
-                array[j + <span className="number">1</span>] = temp;
-                {'}'}
-                {'}'}
-                {'}'}
-                {'}'}
-                {/* Complexité: O(n²) - Deux boucles imbriquées */}
-</pre>
-                    </div>
+                    <CodeBlock code={`void BubbleSort(int[] array)
+{
+    int n = array.Length;
+    
+    for (int i = 0; i < n - 1; i++)              // Boucle externe: n fois
+    {
+        for (int j = 0; j < n - i - 1; j++)      // Boucle interne: n fois
+        {
+            if (array[j] > array[j + 1])
+            {
+                // Échanger
+                int temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
+}
+// Complexité: O(n²) - Deux boucles imbriquées`} />
 
                     <h3>Exemple 4 : Fibonacci récursif - O(2ⁿ)</h3>
-                    <div className="code-block">
-            <pre>
-<span className="keyword">int</span> <span className="function">Fibonacci</span>(<span className="keyword">int</span> n)
-                {'{'}
-                <span className="keyword">if</span> (n &lt;= <span className="number">1</span>)
-        <span className="keyword">return</span> n;
-
-    <span className="keyword">return</span> Fibonacci(n - <span className="number">1</span>) + Fibonacci(n - <span className="number">2</span>);  {/* Deux appels récursifs */}
-                {'}'}
-                {/* Complexité: O(2ⁿ) - Chaque appel génère 2 nouveaux appels */}
-                {/* Pour n=10, environ 1024 appels de fonction ! */}
-</pre>
-                    </div>
+                    <CodeBlock code={`int Fibonacci(int n)
+{
+    if (n <= 1)
+        return n;
+    
+    return Fibonacci(n - 1) + Fibonacci(n - 2);  // Deux appels récursifs
+}
+// Complexité: O(2ⁿ) - Chaque appel génère 2 nouveaux appels
+// Pour n=10, environ 1024 appels de fonction !`} />
                     <p style={{ marginTop: '1rem', padding: '1.5rem', background: 'rgba(255, 0, 110, 0.1)', borderRadius: '12px', borderLeft: '4px solid var(--accent-tertiary)' }}>
                         <strong style={{ color: 'var(--accent-tertiary)' }}>⚠️ Mauvaise pratique :</strong> Cet algorithme
                         récursif est très inefficace car il recalcule les mêmes valeurs plusieurs fois.
@@ -902,20 +895,16 @@ export default function BigOComplexity() {
                     <h3>Exercice 1 : Analyse de code</h3>
                     <div className="example-box">
                         <h4>Quelle est la complexité de cet algorithme ?</h4>
-                        <div className="code-block">
-              <pre>
-<span className="keyword">void</span> <span className="function">PrintPairs</span>(<span className="keyword">int</span>[] array)
-                  {'{'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; array.Length; i++)
-                  {'{'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> j = i + <span className="number">1</span>; j &lt; array.Length; j++)
-                  {'{'}
-                  Console.WriteLine(array[i] + <span className="string">", "</span> + array[j]);
-                  {'}'}
-                  {'}'}
-                  {'}'}
-</pre>
-                        </div>
+                        <CodeBlock code={`void PrintPairs(int[] array)
+{
+    for (int i = 0; i < array.Length; i++)
+    {
+        for (int j = i + 1; j < array.Length; j++)
+        {
+            Console.WriteLine(array[i] + ", " + array[j]);
+        }
+    }
+}`} />
                         <details>
                             <summary style={{ cursor: 'pointer', color: 'var(--accent-primary)', padding: '1rem', background: 'var(--bg-light)', borderRadius: '8px', marginTop: '1rem' }}>
                                 <strong>💡 Cliquez pour voir la réponse détaillée</strong>
@@ -1009,34 +998,30 @@ export default function BigOComplexity() {
                     <h3>Exercice 4 : Analyse complète d'un algorithme</h3>
                     <div className="example-box">
                         <h4>Analysez cet algorithme en détail :</h4>
-                        <div className="code-block">
-              <pre>
-<span className="keyword">int</span> <span className="function">Mystere</span>(<span className="keyword">int</span>[] tableau)
-                  {'{'}
-                  <span className="keyword">int</span> n = tableau.Length;
-    <span className="keyword">int</span> compteur = <span className="number">0</span>;
+                        <CodeBlock code={`int Mystere(int[] tableau)
+{
+    int n = tableau.Length;
+    int compteur = 0;
 
-                  {/* Partie 1 */}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
-                  {'{'}
-                  <span className="keyword">if</span> (tableau[i] % <span className="number">2</span> == <span className="number">0</span>)
+    // Partie 1
+    for (int i = 0; i < n; i++)
+    {
+        if (tableau[i] % 2 == 0)
             compteur++;
-                  {'}'}
+    }
 
-                  {/* Partie 2 */}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> i = <span className="number">0</span>; i &lt; n; i++)
-                  {'{'}
-                  <span className="keyword">for</span> (<span className="keyword">int</span> j = <span className="number">0</span>; j &lt; n; j++)
-                  {'{'}
-                  <span className="keyword">if</span> (tableau[i] &gt; tableau[j])
+    // Partie 2
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (tableau[i] > tableau[j])
                 compteur++;
-                  {'}'}
-                  {'}'}
+        }
+    }
 
-                  <span className="keyword">return</span> compteur;
-                  {'}'}
-</pre>
-                        </div>
+    return compteur;
+}`} />
                         <details>
                             <summary style={{ cursor: 'pointer', color: 'var(--accent-primary)', padding: '1rem', background: 'var(--bg-light)', borderRadius: '8px', marginTop: '1rem' }}>
                                 <strong>💡 Cliquez pour voir l'analyse complète</strong>
