@@ -217,21 +217,36 @@ export default function BigOComplexity() {
 
     // Composant pour afficher le code avec coloration syntaxique
     const CodeBlock = ({ code }) => {
-        const highlightedCode = code
-            // Commentaires
-            .replace(/\/\/(.*?)$/gm, '<span class="comment">//$1</span>')
-            // Chaînes de caractères
-            .replace(/"([^"]*)"/g, '<span class="string">"$1"</span>')
-            // Nombres
-            .replace(/\b(\d+)\b/g, '<span class="number">$1</span>')
-            // Mots-clés
-            .replace(/\b(void|int|for|if|else|return|while|new|class|public|private|static)\b/g, '<span class="keyword">$1</span>')
-            // Noms de fonctions
-            .replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, '<span class="function">$1</span>(');
+        let highlighted = code;
+
+        // 1. D'abord, échapper les caractères HTML
+        highlighted = highlighted
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // 2. Colorer les commentaires (doit être fait en premier pour ne pas toucher le code)
+        highlighted = highlighted.replace(/\/\/(.*?)$/gm, '<span class="comment">//$1</span>');
+
+        // 3. Colorer les chaînes de caractères
+        highlighted = highlighted.replace(/"([^"]*)"/g, '<span class="string">"$1"</span>');
+
+        // 4. Colorer les nombres
+        highlighted = highlighted.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+
+        // 5. Colorer les mots-clés (vérifier qu'ils ne sont pas déjà dans un span)
+        const keywords = ['void', 'int', 'for', 'if', 'else', 'return', 'while', 'new', 'class', 'public', 'private', 'static', 'using', 'namespace'];
+        keywords.forEach(keyword => {
+            const regex = new RegExp(`\\b(${keyword})\\b(?![^<]*>|[^<>]*<\/)`, 'g');
+            highlighted = highlighted.replace(regex, '<span class="keyword">$1</span>');
+        });
+
+        // 6. Colorer les noms de fonctions (mot commençant par une majuscule suivi de parenthèses)
+        highlighted = highlighted.replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, '<span class="function">$1</span>(');
 
         return (
             <div className="code-block">
-                <pre dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+                <pre dangerouslySetInnerHTML={{ __html: highlighted }} />
             </div>
         );
     };
